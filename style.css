@@ -91,3 +91,7 @@ body {
   .outOfStock {
     text-decoration: line-through;
   }
+  
+  .removeCartButton {
+    margin-left: 1rem;
+  }
