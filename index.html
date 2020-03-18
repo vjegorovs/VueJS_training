@@ -1,30 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product app</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <div class="nav-bar"></div>
 
-  <div class="nav-bar"></div>
+    <div id="app">
+      <div class="cart">
+        <p>Cart({{ cart.length }})</p>
+      </div>
 
-  <div id="app">
-    <div class="cart">
-      <p>Cart({{ cart.length }})</p>
+      <product-details :details="details"></product-details>
+      <product
+        :premium="premium"
+        @add-to-cart="updateCart"
+        @remove-from-cart="removeFromCart"
+      ></product>
     </div>
-    
-    <product :premium="premium" @add-to-cart="updateCart" @remove-from-cart="removeFromCart"></product>
-    <product-details :details="details"></product-details>
-    
-  </div>  
 
-
-
-
-
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-  <script src="main.js"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="main.js"></script>
+  </body>
 </html>
