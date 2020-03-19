@@ -16,8 +16,9 @@ Vue.component("product", {
             </div>
   
           <div class="product-info">
+              <product-details :details="details"></product-details>
               <h1>{{ title }}</h1>
-              <h2 v-show="onSale">{{ saleActive }}</h2>
+              <h2 v-show="this.variants[selectedVariant].onSale">{{ saleActive }}</h2>
               <p v-if="inStock">In Stock</p>
               <p v-else
                   :class="{ outOfStock: !inStock }">Out of Stock</p>
@@ -26,13 +27,14 @@ Vue.component("product", {
               <li v-for="detail in details">{{detail}}</li>
               </ul>
   
-              <div v-for="(variant, index) in variants" 
-                  :key="variant.variantId"
-                  class="color-box"
-                  :style="{ backgroundColor: variant.variantColor }"
-                  @mouseover="updateProduct(index)">
+              <div class="color-box-wrapper">
+                <div v-for="(variant, index) in variants" 
+                    :key="variant.variantId"
+                    class="color-box"
+                    :style="{ backgroundColor: variant.variantColor }"
+                    @mouseover="updateProduct(index)">
+                </div>
               </div>
-  
           </div>
           
           <button v-on:click="addToCart" 
@@ -51,7 +53,6 @@ Vue.component("product", {
       product: "Socks",
       description: `They are real warm!`,
       selectedVariant: 0,
-      onSale: true,
       inventory: 8,
       details: ["80% cotton", "20% polyester", "Gender-neutral"],
       variants: [
@@ -59,16 +60,29 @@ Vue.component("product", {
           variantId: 2234,
           variantColor: "green",
           variantImage: "./assets/img/vmSocks-green.jpg",
-          variantQuantity: 10
+          variantQuantity: 10,
+          onSale: false
         },
         {
           variantId: 2235,
           variantColor: "blue",
           variantImage: "./assets/img/vmSocks-blue.jpg",
-          variantQuantity: 0
+          variantQuantity: 0,
+          onSale: false
+        },
+        {
+          variantId: 2236,
+          variantColor: "red",
+          variantImage: "./assets/img/vmSocks-red.jpg",
+          variantQuantity: 4,
+          onSale: true
         }
       ],
       reviews: [],
+      details: {
+        data: "Big, nice and comfy",
+        longData: "You really can't go wrong with a pair of these bad boys"
+      },
       selectedTab: "Reviews"
     };
   },
@@ -97,7 +111,7 @@ Vue.component("product", {
       return this.variants[this.selectedVariant].variantQuantity;
     },
     saleActive() {
-      return this.brand + this.product;
+      return "20% S|A|L|E !! Buy now to save load of moneyyy";
     },
     shipping() {
       if (this.premium) {
@@ -257,8 +271,6 @@ Vue.component("product-tabs", {
   methods: {
     switchTabs(tab) {
       this.selectedTab = tab.target.innerText;
-      console.log("yay");
-      console.log(this.selectedTab, "  this ->> ", tab.target.innerText);
     }
   }
 });
@@ -267,10 +279,6 @@ var app = new Vue({
   el: "#app",
   data: {
     premium: false,
-    details: {
-      data: "Big, nice and comfy",
-      longData: "You really can't go wrong with a pair of these bad boys"
-    },
     cart: []
   },
   methods: {
