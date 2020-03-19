@@ -11,40 +11,44 @@ Vue.component("product", {
   },
   template: `
           <div class="product">
-            <div class="product-image">
-                <img :src="image">
-            </div>
-  
-          <div class="product-info">
-              <product-details :details="details"></product-details>
-              <h1>{{ title }}</h1>
-              <h2 v-show="this.variants[selectedVariant].onSale">{{ saleActive }}</h2>
-              <p v-if="inStock">In Stock</p>
-              <p v-else
-                  :class="{ outOfStock: !inStock }">Out of Stock</p>
-              <p>Shipping: {{ shipping }}</p>
-              <ul>
-              <li v-for="detail in details">{{detail}}</li>
-              </ul>
-  
-              <div class="color-box-wrapper">
-                <div v-for="(variant, index) in variants" 
-                    :key="variant.variantId"
-                    class="color-box"
-                    :style="{ backgroundColor: variant.variantColor }"
-                    @mouseover="updateProduct(index)">
-                </div>
+            <div class="product-image-description-wrapper">
+              <div class="product-image">
+                  <img :src="image">
               </div>
-          </div>
-          
-          <button v-on:click="addToCart" 
-                      :disabled="!inStock"
-                      :class="{disabledButton: !inStock}">Add to Cart</button>
-          <button class="removeCartButton" v-on:click="removeFromCart" 
-                      >Remove from Cart</button>
-          
-          <product-tabs :reviews="reviews" :selectedTab="selectedTab" ></product-tabs>
-  
+    
+            <div class="product-info">
+                <product-details :details="details"></product-details>
+                <h1>{{ title }}</h1>
+                <h4 v-show="this.variants[selectedVariant].onSale">{{ saleActive }}</h4>
+                <p v-if="inStock">In Stock</p>
+                <p v-else
+                    :class="{ outOfStock: !inStock }">Out of Stock</p>
+                <p>Shipping: {{ shipping }}</p>
+                <ul>
+                <li v-for="detail in details">{{detail}}</li>
+                </ul>
+    
+                <div class="color-box-wrapper">
+                  <div v-for="(variant, index) in variants" 
+                      :key="variant.variantId"
+                      class="color-box"
+                      :style="{ backgroundColor: variant.variantColor }"
+                      @mouseover="updateProduct(index)">
+                  </div>
+                </div>
+                <div class="button-row-wrapper">
+                  <button v-on:click="addToCart" 
+                          :disabled="!inStock"
+                          :class="{disabledButton: !inStock}">Add<br>to Cart</button>
+                  <button class="removeCartButton" 
+                          v-on:click="removeFromCart">Remove<br>from Cart</button>
+                </div>
+                
+            </div>
+            
+            
+            </div>
+            <product-tabs :reviews="reviews" :selectedTab="selectedTab" ></product-tabs>
           </div>
       `,
   data() {
@@ -234,7 +238,7 @@ Vue.component("product-tabs", {
     }
   },
   template: `
-        <div>
+        <div class="product-tab-div">
             <span class="tab"
                     :class="{ activeTab: selectedTab === tab }"
                     v-for="(tab,index) in tabs" 
