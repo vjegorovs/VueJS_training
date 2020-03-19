@@ -41,7 +41,7 @@ Vue.component("product", {
           <button class="removeCartButton" v-on:click="removeFromCart" 
                       >Remove from Cart</button>
           
-          <product-tabs :reviews="reviews"></product-tabs>
+          <product-tabs :reviews="reviews" :selectedTab="selectedTab" ></product-tabs>
   
           </div>
       `,
@@ -68,7 +68,8 @@ Vue.component("product", {
           variantQuantity: 0
         }
       ],
-      reviews: []
+      reviews: [],
+      selectedTab: "Reviews"
     };
   },
   methods: {
@@ -173,11 +174,12 @@ Vue.component("product-review", {
           rating: this.rating,
           recommend: this.recommend
         };
-        eventBus.$emit("review-submitted", productReview);
+        this.errors = [];
         this.name = null;
         this.review = null;
         this.rating = null;
         this.recommend = "No";
+        eventBus.$emit("review-submitted", productReview);
       } else {
         this.errors = [];
         if (!this.name) this.errors.push("Name required.");
@@ -211,6 +213,10 @@ Vue.component("product-tabs", {
     reviews: {
       type: Array,
       required: true
+    },
+    selectedTab: {
+      type: String,
+      required: true
     }
   },
   template: `
@@ -219,7 +225,7 @@ Vue.component("product-tabs", {
                     :class="{ activeTab: selectedTab === tab }"
                     v-for="(tab,index) in tabs" 
                     :key="index"
-                    @click="selectedTab = tab"
+                    @click="switchTabs"
                     >{{tab}}</span>
 
             <div v-show="selectedTab === 'Reviews'"> 
@@ -234,8 +240,8 @@ Vue.component("product-tabs", {
                     </ul>
             </div>            
         
-            <product-review v-show="selectedTab === 'Make a Review'"
-                            ></product-review>
+            <product-review 
+            v-show="selectedTab === 'Make a Review'"></product-review>
 
 
         </div>
@@ -247,6 +253,13 @@ Vue.component("product-tabs", {
       tabs: ["Reviews", "Make a Review"],
       selectedTab: "Reviews"
     };
+  },
+  methods: {
+    switchTabs(tab) {
+      this.selectedTab = tab.target.innerText;
+      console.log("yay");
+      console.log(this.selectedTab, "  this ->> ", tab.target.innerText);
+    }
   }
 });
 
